@@ -1,0 +1,54 @@
+--- dht_server.cc       2018-06-07 06:24:49.000000000 +0200
++++ dht_server_new.cc   2020-06-25 11:35:52.626890267 +0200
+@@ -5,12 +5,12 @@
+ // it under the terms of the GNU General Public License as published by
+ // the Free Software Foundation; either version 2 of the License, or
+ // (at your option) any later version.
+-//
++//
+ // This program is distributed in the hope that it will be useful,
+ // but WITHOUT ANY WARRANTY; without even the implied warranty of
+ // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ // GNU General Public License for more details.
+-//
++//
+ // You should have received a copy of the GNU General Public License
+ // along with this program; if not, write to the Free Software
+ // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+@@ -751,7 +751,7 @@
+
+       // Restrict the length of Transaction IDs. We echo them in our replies.
+       if(message[key_t].as_raw_string().size() > 20) {
+-                 throw dht_error(dht_error_protocol, "Transaction ID length too long");
++                  throw dht_error(dht_error_protocol, "Transaction ID length too long");
+       }
+
+       if (!message[key_y].is_raw_string())
+@@ -776,7 +776,7 @@
+       }
+
+       // Sanity check the returned transaction ID.
+-      if ((type == 'r' || type == 'e') &&
++      if ((type == 'r' || type == 'e') &&
+           (!message[key_t].is_raw_string() || message[key_t].as_raw_string().size() != 1))
+         throw dht_error(dht_error_protocol, "Invalid transaction ID type/length.");
+
+@@ -841,7 +841,7 @@
+       transactionKey = packet->transaction()->key(packet->id());
+
+     // Make sure its transaction hasn't timed out yet, if it has/had one
+-    // and don't bother sending non-transaction packets (replies) after
++    // and don't bother sending non-transaction packets (replies) after
+     // more than 15 seconds in the queue.
+     if (packet->has_failed() || packet->age() > 15) {
+       delete packet;
+@@ -896,7 +896,8 @@
+ void
+ DhtServer::event_write() {
+   if (m_highQueue.empty() && m_lowQueue.empty())
+-    throw internal_error("DhtServer::event_write called but both write queues are empty.");
++   lt_log_print(torrent::LOG_THREAD_NOTICE, "DhtServer::event_write called with both queues empty.", 0);
++    //  throw internal_error("DhtServer::event_write called but both write queues are empty.");
+
+   if (!m_uploadThrottle->is_throttled(&m_uploadNode))
+     throw internal_error("DhtServer::event_write called while not in throttle list.");
