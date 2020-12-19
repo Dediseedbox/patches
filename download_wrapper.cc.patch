@@ -1,0 +1,16 @@
+--- download_wrapper.cc 2018-06-07 04:24:50.000000000 +0000
++++ new.download_wrapper.cc     2020-12-19 12:10:08.391448856 +0000
+@@ -205,8 +205,11 @@
+
+   // If hash == NULL we're clearing the queue, so do nothing.
+   if (hash != NULL) {
+-    if (!m_hashChecker->is_checked())
+-      throw internal_error("DownloadWrapper::receive_hash_done(...) Was not expecting non-NULL hash.");
++    if (!m_hashChecker->is_checked()){
++      //throw internal_error("DownloadWrapper::receive_hash_done(...) Was not expecting non-NULL hash.");
++      fprintf( stderr, "DownloadWrapper::receive_hash_done(...) Was not expecting non-NULL hash.");
++      //return;
++    }
+
+     // Receiving chunk hashes after stopping the torrent should be
+     // safe.
